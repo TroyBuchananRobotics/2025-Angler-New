@@ -33,8 +33,6 @@ public class DriveCommands {
                     DoubleSupplier rotation) {
 
                 return drivetrain.applyRequest(() ->{
-                    // double fb = forwardBack.getAsDouble();
-                    // SmartDashboard.putNumber("fb", fb);
                     
                     double transCurveAdjustment = adjustInputCurve(forwardBack.getAsDouble(), leftRight.getAsDouble(),0.9,0.1);
                     SmartDashboard.putNumber("TransCurveAdj", transCurveAdjustment);
