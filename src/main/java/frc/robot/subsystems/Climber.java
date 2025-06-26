@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
+import com.ctre.phoenix6.configs.MotorOutputConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.SoftwareLimitSwitchConfigs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
@@ -32,6 +33,10 @@ public class Climber extends SubsystemBase {
         .withForwardSoftLimitThreshold(ClimberConstants.forwardSoftLimit)
         .withReverseSoftLimitEnable(true)
         .withReverseSoftLimitThreshold(ClimberConstants.reverseSoftLimit));
+        motorConfig.withMotorOutput(new MotorOutputConfigs()
+        .withNeutralMode(ClimberConstants.neutralMode)
+        .withInverted(ClimberConstants.invertedMode));
+        m_motor.getConfigurator().apply(motorConfig);
     }
 
 
