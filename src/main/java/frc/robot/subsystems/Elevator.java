@@ -7,10 +7,12 @@ import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.SoftwareLimitSwitchConfigs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.Follower;
+import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.constants.ElevatorConstants;
 
@@ -19,11 +21,21 @@ import frc.robot.constants.ElevatorConstants;
 public class Elevator extends SubsystemBase {
     TalonFX m_leader = new TalonFX(ElevatorConstants.leader_MotorID);
     TalonFX m_follower = new TalonFX(ElevatorConstants.follower_MotorID);
+    MotionMagicVoltage m_request = new MotionMagicVoltage(0);
     
 
     public Elevator(){
         configureMotors();
         m_follower.setControl(new Follower(13, true));
+
+    }
+
+    private Command setPosition(double setPose){
+        return runOnce(()-> m_request.withPosition(setPose));
+    }
+
+    private Command idleMode(){
+        return runOnce(()-> m_leader.stopMotor());
     }
 
     private void configureMotors(){
