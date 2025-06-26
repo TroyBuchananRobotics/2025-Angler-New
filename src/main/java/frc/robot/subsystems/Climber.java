@@ -19,23 +19,28 @@ public class Climber extends SubsystemBase {
 
     private void configureMotor(){
         TalonFXConfiguration motorConfig = new TalonFXConfiguration();
+
         motorConfig.withCurrentLimits(new CurrentLimitsConfigs()
         .withStatorCurrentLimit(ClimberConstants.statorCurrentLimit)
         .withStatorCurrentLimitEnable(true)
         .withSupplyCurrentLimit(ClimberConstants.supplyCurrentLimit)
         .withSupplyCurrentLimitEnable(true));
+
         motorConfig.withSlot0(new Slot0Configs()
-        .withKP(ClimberConstants.KP)
-        .withKS(ClimberConstants.KS)
-        .withKV(ClimberConstants.KV));
+        .withKP(ClimberConstants.kP)
+        .withKS(ClimberConstants.kS)
+        .withKV(ClimberConstants.kV));
+
         motorConfig.withSoftwareLimitSwitch(new SoftwareLimitSwitchConfigs()
         .withForwardSoftLimitEnable(true)
         .withForwardSoftLimitThreshold(ClimberConstants.forwardSoftLimit)
         .withReverseSoftLimitEnable(true)
         .withReverseSoftLimitThreshold(ClimberConstants.reverseSoftLimit));
+        
         motorConfig.withMotorOutput(new MotorOutputConfigs()
         .withNeutralMode(ClimberConstants.neutralMode)
         .withInverted(ClimberConstants.invertedMode));
+
         m_motor.getConfigurator().apply(motorConfig);
     }
 
