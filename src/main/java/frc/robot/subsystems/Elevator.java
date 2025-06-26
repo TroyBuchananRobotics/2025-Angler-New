@@ -12,7 +12,7 @@ import com.ctre.phoenix6.signals.NeutralModeValue;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-//Trevor to continue updating
+//Someone needs to add stuff here for realz
 
 public class Elevator extends SubsystemBase {
     TalonFX m_leader = new TalonFX(13);
