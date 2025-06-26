@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
+import com.ctre.phoenix6.configs.MotionMagicConfigs;
 import com.ctre.phoenix6.configs.MotorOutputConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.SoftwareLimitSwitchConfigs;
@@ -11,14 +12,14 @@ import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.constants.ElevatorConstants;
 
 //Someone needs to add stuff here for realz
 
 public class Elevator extends SubsystemBase {
-    TalonFX m_leader = new TalonFX(13);
-    TalonFX m_follower = new TalonFX(14);
-
-    //test
+    TalonFX m_leader = new TalonFX(ElevatorConstants.leader_MotorID);
+    TalonFX m_follower = new TalonFX(ElevatorConstants.follower_MotorID);
+    
 
     public Elevator(){
         configureMotors();
@@ -28,31 +29,36 @@ public class Elevator extends SubsystemBase {
     private void configureMotors(){
         TalonFXConfiguration leaderConfig = new TalonFXConfiguration();
         leaderConfig.withCurrentLimits(new CurrentLimitsConfigs()
-            .withStatorCurrentLimit(65)
+            .withStatorCurrentLimit(ElevatorConstants.leaderStatorCurrentLimit)
             .withStatorCurrentLimitEnable(true)
-            .withSupplyCurrentLimit(40)
+            .withSupplyCurrentLimit(ElevatorConstants.leaderSupplyCurrentLimit)
             .withStatorCurrentLimitEnable(true));
         leaderConfig.withSlot0(new Slot0Configs()
-            .withKP(10)
-            .withKD(0.1)
-            .withKS(0.13)
-            .withKV(0.12)
-            .withKG(0.55));
+            .withKP(ElevatorConstants.leaderKP)
+            .withKD(ElevatorConstants.leaderKD)
+            .withKS(ElevatorConstants.leaderKS)
+            .withKV(ElevatorConstants.leaderKV)
+            .withKG(ElevatorConstants.leaderKG));
         leaderConfig.withSoftwareLimitSwitch(new SoftwareLimitSwitchConfigs()
             .withForwardSoftLimitEnable(true)
-            .withForwardSoftLimitThreshold(22.15)
+            .withForwardSoftLimitThreshold(ElevatorConstants.leaderForwardSoftLimit)
             .withReverseSoftLimitEnable(true)
-            .withReverseSoftLimitThreshold(0.1));
+            .withReverseSoftLimitThreshold(ElevatorConstants.leaderReverseSoftLimit));
         leaderConfig.withMotorOutput(new MotorOutputConfigs()
             .withInverted(InvertedValue.Clockwise_Positive)
             .withNeutralMode(NeutralModeValue.Brake));
+        leaderConfig.withMotionMagic(new MotionMagicConfigs()
+            .withMotionMagicCruiseVelocity(ElevatorConstants.leaderMotionCruiseVelo)
+            .withMotionMagicAcceleration(ElevatorConstants.leaderMotionAccel)
+            .withMotionMagicExpo_kV(ElevatorConstants.leaderMotionExpo_kV)
+            .withMotionMagicExpo_kA(ElevatorConstants.leaderMotionExpo_kA));
         m_leader.getConfigurator().apply(leaderConfig);
 
         TalonFXConfiguration followerConfig = new TalonFXConfiguration();
         followerConfig.withCurrentLimits(new CurrentLimitsConfigs()
-            .withStatorCurrentLimit(65)
+            .withStatorCurrentLimit(ElevatorConstants.followerStatorCurrentLimit)
             .withStatorCurrentLimitEnable(true)
-            .withSupplyCurrentLimit(40)
+            .withSupplyCurrentLimit(ElevatorConstants.followerSupplyCurrentLimit)
             .withStatorCurrentLimitEnable(true));
         
         m_follower.getConfigurator().apply(followerConfig);        
