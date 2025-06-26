@@ -5,17 +5,34 @@ import com.ctre.phoenix6.configs.MotorOutputConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.SoftwareLimitSwitchConfigs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.constants.ClimberConstants;
 
 public class Climber extends SubsystemBase {
     TalonFX m_motor = new TalonFX(ClimberConstants.kMotorID);
+    MotionMagicVoltage m_request = new MotionMagicVoltage(0);
 
     public Climber(){
         configureMotor();
     }
+
+
+    public Command setPosition(double desirePos){
+        return runOnce(() -> m_motor.setControl(m_request.withPosition(desirePos)));
+    }
+
+    public Command idleMotor(){
+        return runOnce(() -> m_motor.stopMotor());
+    }
+
+
+
+
+
 
     private void configureMotor(){
         TalonFXConfiguration motorConfig = new TalonFXConfiguration();
@@ -36,7 +53,7 @@ public class Climber extends SubsystemBase {
         .withForwardSoftLimitThreshold(ClimberConstants.forwardSoftLimit)
         .withReverseSoftLimitEnable(true)
         .withReverseSoftLimitThreshold(ClimberConstants.reverseSoftLimit));
-        
+
         motorConfig.withMotorOutput(new MotorOutputConfigs()
         .withNeutralMode(ClimberConstants.neutralMode)
         .withInverted(ClimberConstants.invertedMode));
