@@ -49,4 +49,6 @@ public class Wrist extends SubsystemBase {
             .withMotionMagicAcceleration(WristConstants.motionMagicAccel)
             .withMotionMagicCruiseVelocity(WristConstants.motionMagicCruiseVelo));
     }
+
+    
 }
