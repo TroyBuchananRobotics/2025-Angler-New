@@ -9,14 +9,20 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 
 import frc.robot.commands.DriveCommands;
+import frc.robot.commands.ScoringCommands;
 import frc.robot.constants.DriveConstants;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
+import frc.robot.subsystems.Elevator;
+import frc.robot.subsystems.Wrist;
 
 //test commit
 //breh test 2
 
 public class RobotContainer {
+
+    private final Elevator m_elevator = new Elevator();
+    private final Wrist m_wrist = new Wrist();
 
 
     private final Telemetry logger = new Telemetry(DriveConstants.MAX_SPEED);
@@ -43,8 +49,12 @@ public class RobotContainer {
 
         // reset the field-centric heading on left bumper press
         driverController.leftBumper().onTrue(m_drivetrain.runOnce(() -> m_drivetrain.seedFieldCentric()));
-
+        driverController.a().onTrue(ScoringCommands.goL1(m_elevator, m_wrist)).onFalse(ScoringCommands.goHome(m_elevator, m_wrist));
+        driverController.b().onTrue(ScoringCommands.goL2(m_elevator, m_wrist)).onFalse(ScoringCommands.goHome(m_elevator, m_wrist));
+        driverController.x().onTrue(ScoringCommands.goL3(m_elevator, m_wrist)).onFalse(ScoringCommands.goHome(m_elevator, m_wrist));
+        driverController.y().onTrue(ScoringCommands.goL4(m_elevator, m_wrist)).onFalse(ScoringCommands.goHome(m_elevator, m_wrist));
         m_drivetrain.registerTelemetry(logger::telemeterize);
+
     }
 
     public Command getAutonomousCommand() {

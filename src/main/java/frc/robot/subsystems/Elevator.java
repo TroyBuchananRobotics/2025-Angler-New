@@ -15,13 +15,14 @@ import com.ctre.phoenix6.signals.NeutralModeValue;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.constants.ElevatorConstants;
+import frc.robot.constants.ScoringConstants.Home;
 
 //Someone needs to add stuff here for realz
 
 public class Elevator extends SubsystemBase {
     TalonFX m_leader = new TalonFX(ElevatorConstants.leader_MotorID);
     TalonFX m_follower = new TalonFX(ElevatorConstants.follower_MotorID);
-    MotionMagicVoltage m_request = new MotionMagicVoltage(0);
+    MotionMagicVoltage m_request = new MotionMagicVoltage(Home.kElevator);
     
 
     public Elevator(){
@@ -30,11 +31,11 @@ public class Elevator extends SubsystemBase {
 
     }
 
-    private Command setPosition(double setPose){
+    public Command setPosition(double setPose){
         return runOnce(()-> m_request.withPosition(setPose));
     }
 
-    private Command idleMode(){
+    public Command idleMode(){
         return runOnce(()-> m_leader.stopMotor());
     }
 
