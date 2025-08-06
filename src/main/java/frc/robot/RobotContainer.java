@@ -13,6 +13,7 @@ import frc.robot.commands.ScoringCommands;
 import frc.robot.constants.DriveConstants;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
+import frc.robot.subsystems.CoralClaw;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Wrist;
 
@@ -23,6 +24,7 @@ public class RobotContainer {
 
     private final Elevator m_elevator = new Elevator();
     private final Wrist m_wrist = new Wrist();
+    private final CoralClaw m_coralClaw = new CoralClaw();
 
 
     private final Telemetry logger = new Telemetry(DriveConstants.MAX_SPEED);
@@ -53,6 +55,7 @@ public class RobotContainer {
         driverController.b().onTrue(ScoringCommands.goL2(m_elevator, m_wrist)).onFalse(ScoringCommands.goHome(m_elevator, m_wrist));
         driverController.x().onTrue(ScoringCommands.goL3(m_elevator, m_wrist)).onFalse(ScoringCommands.goHome(m_elevator, m_wrist));
         driverController.y().onTrue(ScoringCommands.goL4(m_elevator, m_wrist)).onFalse(ScoringCommands.goHome(m_elevator, m_wrist));
+        driverController.rightTrigger().onTrue(m_coralClaw.SetPower(2.5)).onFalse(m_coralClaw.stop());
         m_drivetrain.registerTelemetry(logger::telemeterize);
 
     }

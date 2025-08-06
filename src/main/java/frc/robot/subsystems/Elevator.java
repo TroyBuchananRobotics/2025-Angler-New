@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
+import com.ctre.phoenix6.configs.FeedbackConfigs;
 import com.ctre.phoenix6.configs.MotionMagicConfigs;
 import com.ctre.phoenix6.configs.MotorOutputConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
@@ -12,6 +13,7 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.constants.ElevatorConstants;
@@ -20,8 +22,8 @@ import frc.robot.constants.ScoringConstants.Home;
 //Someone needs to add stuff here for realz
 
 public class Elevator extends SubsystemBase {
-    TalonFX m_leader = new TalonFX(ElevatorConstants.leader_MotorID);
-    TalonFX m_follower = new TalonFX(ElevatorConstants.follower_MotorID);
+    TalonFX m_leader = new TalonFX(ElevatorConstants.leader_MotorID,"*");
+    TalonFX m_follower = new TalonFX(ElevatorConstants.follower_MotorID,"*");
     MotionMagicVoltage m_request = new MotionMagicVoltage(Home.kElevator);
     
 
@@ -32,7 +34,7 @@ public class Elevator extends SubsystemBase {
     }
 
     public Command setPosition(double setPose){
-        return runOnce(()-> m_request.withPosition(setPose));
+        return runOnce(()-> m_leader.setControl( m_request.withPosition(setPose)));
     }
 
     public Command idleMode(){
@@ -65,6 +67,8 @@ public class Elevator extends SubsystemBase {
             .withMotionMagicAcceleration(ElevatorConstants.leaderMotionAccel)
             .withMotionMagicExpo_kV(ElevatorConstants.leaderMotionExpo_kV)
             .withMotionMagicExpo_kA(ElevatorConstants.leaderMotionExpo_kA));
+        leaderConfig.withFeedback(new FeedbackConfigs()
+            .withFeedbackRotorOffset(-0.31));
         m_leader.getConfigurator().apply(leaderConfig);
 
         TalonFXConfiguration followerConfig = new TalonFXConfiguration();
@@ -77,5 +81,8 @@ public class Elevator extends SubsystemBase {
         m_follower.getConfigurator().apply(followerConfig);        
 
     }
-    
+    @Override 
+    public void periodic(){
+       SmartDashboard.putNumber("Elevator Position", m_leader.getPosition().getValueAsDouble());
+    }
 }

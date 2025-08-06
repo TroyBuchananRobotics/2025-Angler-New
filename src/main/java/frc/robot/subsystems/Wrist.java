@@ -10,6 +10,7 @@ import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.TalonFX;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.constants.WristConstants;
@@ -25,7 +26,7 @@ public class Wrist extends SubsystemBase {
     }
 
     public Command setPosition(double pos){
-        return runOnce(() -> m_request.withPosition(pos));
+        return runOnce(() -> m_motor.setControl(m_request.withPosition(pos)));
     }
 
 
@@ -63,6 +64,9 @@ public class Wrist extends SubsystemBase {
             .withMotionMagicAcceleration(WristConstants.motionMagicAccel)
             .withMotionMagicCruiseVelocity(WristConstants.motionMagicCruiseVelo));
     }
-
+    @Override
+    public void periodic() {
+        SmartDashboard.putNumber("Wrist Position", m_motor.getPosition().getValueAsDouble());
+    }
     
 }
