@@ -6,6 +6,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.button.CommandGenericHID;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 
 import frc.robot.commands.DriveCommands;
@@ -32,6 +33,7 @@ public class RobotContainer {
     private final Telemetry logger = new Telemetry(DriveConstants.MAX_SPEED);
 
     private final CommandXboxController driverController = new CommandXboxController(0);
+    private final CommandGenericHID operatorController = new CommandGenericHID(1);
 
     public final CommandSwerveDrivetrain m_drivetrain = TunerConstants.createDrivetrain();
 
