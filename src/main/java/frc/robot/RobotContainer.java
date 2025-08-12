@@ -54,19 +54,22 @@ public class RobotContainer {
 
 
         // reset the field-centric heading on left bumper press
+        operatorController.button(12).onTrue(ScoringCommands.goL1(m_elevator, m_wrist));
+        operatorController.button(9).onTrue(ScoringCommands.goL2(m_elevator, m_wrist));
+        operatorController.button(6).onTrue(ScoringCommands.goL3(m_elevator, m_wrist));
+        operatorController.button(3).onTrue(ScoringCommands.goL4(m_elevator, m_wrist));
+        operatorController.button(11).onTrue(ScoringCommands.goProcessor(m_elevator, m_wrist));
+        operatorController.button(2).onTrue(ScoringCommands.goBarge(m_elevator, m_wrist));
+        operatorController.button(10).onTrue(ScoringCommands.goHome(m_elevator, m_wrist));
+        operatorController.button(8).onTrue(ScoringCommands.goLow(m_elevator, m_wrist));
+        operatorController.button(5).onTrue(ScoringCommands.goHigh(m_elevator, m_wrist));
+        
         driverController.povRight().onTrue(m_drivetrain.runOnce(() -> m_drivetrain.seedFieldCentric()));
-        driverController.a().onTrue(ScoringCommands.goL1(m_elevator, m_wrist));
-        driverController.b().onTrue(ScoringCommands.goL2(m_elevator, m_wrist));
-        driverController.x().onTrue(ScoringCommands.goL3(m_elevator, m_wrist));
-        driverController.y().onTrue(ScoringCommands.goL4(m_elevator, m_wrist));
-        driverController.povLeft().onTrue(ScoringCommands.goHome(m_elevator, m_wrist));
         driverController.rightTrigger().onTrue(m_coralClaw.SetPower(2.5)).onFalse(m_coralClaw.stop());
         driverController.leftTrigger().onTrue(m_coralClaw.SetPower(-2.5)).onFalse(m_coralClaw.SetPower(-0.8));
         m_drivetrain.registerTelemetry(logger::telemeterize);
-        //driverController.povDown().onTrue(ScoringCommands.goLow(m_elevator, m_wrist));
-        //driverController.povUp().onTrue(ScoringCommands.goHigh(m_elevator, m_wrist));
-        //driverController.rightBumper().onTrue(m_algaeClaw.SetVoltage(2.5)).onFalse(m_algaeClaw.stop());
-        //driverController.leftBumper().onTrue(m_algaeClaw.SetVoltage(-2.5));
+        driverController.rightBumper().onTrue(m_algaeClaw.SetVoltage(2.5)).onFalse(m_algaeClaw.stop());
+        driverController.leftBumper().onTrue(m_algaeClaw.SetVoltage(-2.5));
     }
 
     public Command getAutonomousCommand() {
