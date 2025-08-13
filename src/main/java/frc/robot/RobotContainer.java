@@ -4,8 +4,11 @@
 
 package frc.robot;
 
+import java.util.function.BooleanSupplier;
+
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandGenericHID;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 
@@ -53,22 +56,42 @@ public class RobotContainer {
     
 
 
-        // reset the field-centric heading on left bumper press
-        operatorController.button(12).onTrue(ScoringCommands.goL1(m_elevator, m_wrist));
-        operatorController.button(9).onTrue(ScoringCommands.goL2(m_elevator, m_wrist));
-        operatorController.button(6).onTrue(ScoringCommands.goL3(m_elevator, m_wrist));
-        operatorController.button(3).onTrue(ScoringCommands.goL4(m_elevator, m_wrist));
-        operatorController.button(11).onTrue(ScoringCommands.goProcessor(m_elevator, m_wrist));
-        operatorController.button(2).onTrue(ScoringCommands.goBarge(m_elevator, m_wrist));
-        operatorController.button(10).onTrue(ScoringCommands.goHome(m_elevator, m_wrist));
-        operatorController.button(8).onTrue(ScoringCommands.goLow(m_elevator, m_wrist));
-        operatorController.button(5).onTrue(ScoringCommands.goHigh(m_elevator, m_wrist));
+        // reset the field-centric heading on left bumper press        
+        //TODO Right trigger universal outake, Left Bumper Coral Intake/Funnel
+        driverController.leftTrigger()
+            .onTrue(new ConditionalCommand(
+                ScoringCommands.goProcessor(m_elevator, m_wrist), 
+                ScoringCommands.goL1(m_elevator, m_wrist), 
+                m_algaeClaw::hasAlgae))
+            .onFalse(ScoringCommands.goHome(m_elevator, m_wrist));
+
+        driverController.leftTrigger().and(operatorController.button(9))
+            .onTrue(ScoringCommands.goL2(m_elevator, m_wrist))
+            .onFalse(ScoringCommands.goHome(m_elevator, m_wrist));
+        driverController.rightBumper().and(operatorController.button(9))
+            .onTrue(ScoringCommands.goLow(m_elevator, m_wrist).alongWith(m_algaeClaw.SetVoltage(2.5)))
+            .onFalse(ScoringCommands.goHome(m_elevator, m_wrist).alongWith(m_algaeClaw.stop()));
+
+        driverController.leftTrigger().and(operatorController.button(6))
+            .onTrue(ScoringCommands.goL3(m_elevator, m_wrist))
+            .onFalse(ScoringCommands.goHome(m_elevator, m_wrist));
+        driverController.rightBumper().and(operatorController.button(6))
+            .onTrue(ScoringCommands.goHigh(m_elevator, m_wrist).alongWith(m_algaeClaw.SetVoltage(2.5)))
+            .onFalse(ScoringCommands.goHome(m_elevator, m_wrist).alongWith(m_algaeClaw.stop()));
+
+        driverController.leftTrigger().and(operatorController.button(3))
+            .onTrue(new ConditionalCommand(
+                ScoringCommands.goBarge(m_elevator, m_wrist),
+                ScoringCommands.goL4(m_elevator, m_wrist), 
+                m_algaeClaw::hasAlgae))
+            .onFalse(ScoringCommands.goHome(m_elevator, m_wrist));
+
         
         driverController.povRight().onTrue(m_drivetrain.runOnce(() -> m_drivetrain.seedFieldCentric()));
-        driverController.rightTrigger().onTrue(m_coralClaw.SetPower(2.5)).onFalse(m_coralClaw.stop());
+        //driverController.rightTrigger().onTrue(m_coralClaw.SetPower(2.5)).onFalse(m_coralClaw.stop()); //TODO
         driverController.leftTrigger().onTrue(m_coralClaw.SetPower(-2.5)).onFalse(m_coralClaw.SetPower(-0.8));
         m_drivetrain.registerTelemetry(logger::telemeterize);
-        driverController.rightBumper().onTrue(m_algaeClaw.SetVoltage(2.5)).onFalse(m_algaeClaw.stop());
+        //driverController.rightBumper().onTrue(m_algaeClaw.SetVoltage(2.5)).onFalse(m_algaeClaw.stop()); //TODO
         driverController.leftBumper().onTrue(m_algaeClaw.SetVoltage(-2.5));
     }
 

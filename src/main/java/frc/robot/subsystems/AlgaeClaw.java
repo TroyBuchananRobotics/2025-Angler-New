@@ -1,5 +1,7 @@
 package frc.robot.subsystems;
 
+import java.util.function.BooleanSupplier;
+
 import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
 import com.ctre.phoenix6.configs.MotorOutputConfigs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
@@ -18,6 +20,10 @@ public class AlgaeClaw extends SubsystemBase {
     }
     public Command stop(){
         return runOnce(()-> m_motor.stopMotor());
+    }
+
+    public boolean hasAlgae(){
+        return (m_motor.getStatorCurrent().getValueAsDouble()>20.0);
     }
     
     public AlgaeClaw(){
