@@ -23,7 +23,7 @@ public class AlgaeClaw extends SubsystemBase {
     }
 
     public boolean hasAlgae(){
-        return (m_motor.getStatorCurrent().getValueAsDouble()>20.0);
+        return (m_motor.getStatorCurrent().getValueAsDouble()>23.0);
     }
     
     public AlgaeClaw(){

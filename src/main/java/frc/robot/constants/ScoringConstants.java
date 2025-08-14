@@ -25,6 +25,8 @@ public final class ScoringConstants {
     public static final class Load{
         public static final double kElevator = 18.0;
         public static final double kWrist = 0.01;
+        public static final double kFunnelVoltage = 1.5;
+        public static final double kCoralClawVoltage = -2.5;
     }
     public static final class High{
         public static final double kElevator = 13.0;

@@ -15,7 +15,9 @@ import frc.robot.constants.ScoringConstants.Load;
 import frc.robot.constants.ScoringConstants.Lollipop;
 import frc.robot.constants.ScoringConstants.Low;
 import frc.robot.constants.ScoringConstants.Processor;
+import frc.robot.subsystems.CoralClaw;
 import frc.robot.subsystems.Elevator;
+import frc.robot.subsystems.Funnel;
 import frc.robot.subsystems.Wrist;
 
 public class ScoringCommands {
@@ -38,9 +40,11 @@ public class ScoringCommands {
     public static Command goL4(Elevator elevator, Wrist wrist){
         return(elevator.setPosition(L4.kElevator).alongWith(wrist.setPosition(L4.kWrist)));
     }
-
-    public static Command goLoad(Elevator elevator, Wrist wrist){
-        return(elevator.setPosition(Load.kElevator).alongWith(wrist.setPosition(Load.kWrist)));
+    
+    public static Command goLoad(Elevator elevator, Wrist wrist, Funnel funnel, CoralClaw coralClaw){
+        return(
+            elevator.setPosition(Load.kElevator).alongWith(wrist.setPosition(Load.kWrist))
+            .andThen(funnel.setPower(Load.kFunnelVoltage)).alongWith(coralClaw.SetPower(Load.kCoralClawVoltage)));
     }
 
     public static Command goHigh(Elevator elevator, Wrist wrist){
@@ -58,8 +62,9 @@ public class ScoringCommands {
     public static Command goProcessor(Elevator elevator, Wrist wrist){
         return(elevator.setPosition(Processor.kElevator).alongWith(wrist.setPosition(Processor.kWrist)));
     }
-
+    /* 
     public static Command goLollipop(Elevator elevator, Wrist wrist){
         return(elevator.setPosition(Lollipop.kElevator).alongWith(wrist.setPosition(Lollipop.kWrist)));
     }
+*/
 }
