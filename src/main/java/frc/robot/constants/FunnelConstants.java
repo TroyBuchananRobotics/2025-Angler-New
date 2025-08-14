@@ -6,6 +6,8 @@ import com.ctre.phoenix6.signals.NeutralModeValue;
 public class FunnelConstants {
     
     public static final int MotorID = 20;
+    public static final int LaserId1 = 26;
+    public static final int LaserId2 = 27;
 
     public static final InvertedValue invertedMode = InvertedValue.CounterClockwise_Positive;
     public static final NeutralModeValue neutralMode = NeutralModeValue.Brake;

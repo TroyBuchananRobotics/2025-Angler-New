@@ -100,10 +100,11 @@ public class RobotContainer {
             .onFalse(m_coralClaw.stop().alongWith(m_algaeClaw.stop()));
                 
         //left bumper coral intake
+        /* 
         driverController.leftBumper()
             .onTrue(ScoringCommands.goLoad(m_elevator, m_wrist, m_funnel, m_coralClaw))
             .onFalse(m_coralClaw.SetPower(-0.8).alongWith(ScoringCommands.goHome(m_elevator, m_wrist)).alongWith(m_funnel.stop()));
-
+*/
         m_drivetrain.registerTelemetry(logger::telemeterize);
     }
 

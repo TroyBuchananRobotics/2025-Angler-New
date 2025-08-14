@@ -41,12 +41,13 @@ public class ScoringCommands {
         return(elevator.setPosition(L4.kElevator).alongWith(wrist.setPosition(L4.kWrist)));
     }
     
+    /* 
     public static Command goLoad(Elevator elevator, Wrist wrist, Funnel funnel, CoralClaw coralClaw){
         return(
             elevator.setPosition(Load.kElevator).alongWith(wrist.setPosition(Load.kWrist))
             .andThen(funnel.setPower(Load.kFunnelVoltage)).alongWith(coralClaw.SetPower(Load.kCoralClawVoltage)));
     }
-
+*/
     public static Command goHigh(Elevator elevator, Wrist wrist){
         return(elevator.setPosition(High.kElevator).alongWith(wrist.setPosition(High.kWrist)));
     }
