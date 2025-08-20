@@ -29,7 +29,9 @@ public class Wrist extends SubsystemBase {
         return runOnce(() -> m_motor.setControl(m_request.withPosition(pos)));
     }
 
-
+    public void setPositionNotCmd(double pos){
+        m_motor.setControl(m_request.withPosition(pos));
+    }
 
 
 

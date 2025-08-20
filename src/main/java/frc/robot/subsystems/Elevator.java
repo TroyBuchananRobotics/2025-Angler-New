@@ -37,6 +37,10 @@ public class Elevator extends SubsystemBase {
         return runOnce(()-> m_leader.setControl( m_request.withPosition(setPose)));
     }
 
+    public void setPositionNotCmd(double setPose){
+         m_leader.setControl(m_request.withPosition(setPose));
+    }
+
     public Command idleMode(){
         return runOnce(()-> m_leader.stopMotor());
     }

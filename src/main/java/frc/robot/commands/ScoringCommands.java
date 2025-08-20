@@ -11,7 +11,6 @@ import frc.robot.constants.ScoringConstants.L1;
 import frc.robot.constants.ScoringConstants.L2;
 import frc.robot.constants.ScoringConstants.L3;
 import frc.robot.constants.ScoringConstants.L4;
-import frc.robot.constants.ScoringConstants.Load;
 import frc.robot.constants.ScoringConstants.Lollipop;
 import frc.robot.constants.ScoringConstants.Low;
 import frc.robot.constants.ScoringConstants.Processor;
