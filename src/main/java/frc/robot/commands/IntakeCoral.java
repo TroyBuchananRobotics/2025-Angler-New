@@ -28,16 +28,16 @@ public class IntakeCoral extends Command {
 
     @Override
     public void initialize() {
-        m_elevator.setPositionNotCmd(IntakeConstants.kElevator);
-        m_wrist.setPositionNotCmd(IntakeConstants.kWrist);
-        m_funnel.setPowerNotCmd(IntakeConstants.kFunnelVoltage);
-        m_coralClaw.SetPowerNotCmd(3.5);
+        m_elevator.setPositionFunction(IntakeConstants.kElevator);
+        m_wrist.setPositionFunction(IntakeConstants.kWrist);
+        m_funnel.setPowerFunction(IntakeConstants.kFunnelVoltage);
+        m_coralClaw.SetPowerFunction(3.5);
     }
 
     @Override
     public void execute() {
         if (m_coralClaw.getMeasurement1()< IntakeConstants.klaserMeasurment){
-            m_coralClaw.SetPowerNotCmd(2.5);
+            m_coralClaw.SetPowerFunction(2.5);
             Lc1Triggered = true;
         }
         if (m_coralClaw.hasCoral() && Lc1Triggered){
@@ -49,8 +49,8 @@ public class IntakeCoral extends Command {
 
     @Override
     public void end(boolean interrupted) {
-        m_wrist.setPositionNotCmd(Home.kWrist);
-        m_elevator.setPositionNotCmd(Home.kElevator);
+        m_wrist.setPositionFunction(Home.kWrist);
+        m_elevator.setPositionFunction(Home.kElevator);
     }
 
     @Override

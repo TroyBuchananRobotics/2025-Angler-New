@@ -32,7 +32,7 @@ public class Funnel extends SubsystemBase {
     public Command setPower(double desiredVolts){
         return runOnce(() -> m_motor.setVoltage(desiredVolts));
     }
-    public void setPowerNotCmd(double desiredVolts){
+    public void setPowerFunction(double desiredVolts){
         m_motor.setVoltage(desiredVolts);
     }
 

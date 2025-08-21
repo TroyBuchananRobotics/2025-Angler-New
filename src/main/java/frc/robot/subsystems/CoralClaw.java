@@ -68,7 +68,7 @@ public class CoralClaw extends SubsystemBase {
         return runOnce(()-> m_motor.setVoltage(DesiredVolts));
     }
 
-    public void SetPowerNotCmd(double DesiredVolts){
+    public void SetPowerFunction(double DesiredVolts){
         m_motor.setVoltage(DesiredVolts);
     }
 

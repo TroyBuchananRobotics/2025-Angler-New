@@ -12,7 +12,9 @@ import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandGenericHID;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 
+
 import frc.robot.commands.DriveCommands;
+import frc.robot.commands.IntakeCoral;
 import frc.robot.commands.ScoringCommands;
 import frc.robot.constants.DriveConstants;
 import frc.robot.generated.TunerConstants;
@@ -100,6 +102,12 @@ public class RobotContainer {
             .onFalse(m_coralClaw.stop().alongWith(m_algaeClaw.stop()));
                 
         //left bumper coral intake
+        driverController.leftBumper()
+            .onTrue(new IntakeCoral(m_funnel, m_elevator, m_wrist, m_coralClaw))
+            .onFalse(ScoringCommands.goHome(m_elevator, m_wrist).
+                alongWith(m_coralClaw.stop()).
+                alongWith(m_algaeClaw.stop()));
+
         /* 
         driverController.leftBumper()
             .onTrue(ScoringCommands.goLoad(m_elevator, m_wrist, m_funnel, m_coralClaw))
