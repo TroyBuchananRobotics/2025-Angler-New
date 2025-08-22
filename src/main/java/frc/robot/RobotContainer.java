@@ -6,6 +6,12 @@ package frc.robot;
 
 import java.util.function.BooleanSupplier;
 
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.events.EventTrigger;
+
+import edu.wpi.first.util.sendable.Sendable;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
@@ -30,6 +36,7 @@ import frc.robot.subsystems.Wrist;
 
 public class RobotContainer {
 
+    private final SendableChooser<Command> autoChooser;
     private final Elevator m_elevator = new Elevator();
     private final Wrist m_wrist = new Wrist();
     private final CoralClaw m_coralClaw = new CoralClaw();
@@ -44,10 +51,32 @@ public class RobotContainer {
     public final CommandSwerveDrivetrain m_drivetrain = TunerConstants.createDrivetrain();
 
     public RobotContainer() {
-        configureBindings();
+
+        autoChooser = AutoBuilder.buildAutoChooser();
+        SmartDashboard.putData("Auto Chooser: ", autoChooser);
+
+        
+        
+        configureButtonBindings();
+        configureEvents();
     }
 
-    private void configureBindings() {
+    private void configureEvents(){
+
+        
+        new EventTrigger("Coral Outtake").onTrue(m_coralClaw.SetPower(2.5)).onFalse(m_coralClaw.stop());
+        new EventTrigger("Coral Intake").onTrue(new IntakeCoral(m_funnel, m_elevator, m_wrist, m_coralClaw))
+            .onFalse(ScoringCommands.goHome(m_elevator, m_wrist));
+        new EventTrigger("L1").onTrue(ScoringCommands.goL1(m_elevator, m_wrist))
+            .onFalse(ScoringCommands.goHome(m_elevator, m_wrist));
+        new EventTrigger("L2").onTrue(ScoringCommands.goL2(m_elevator, m_wrist))
+            .onFalse(ScoringCommands.goHome(m_elevator, m_wrist));
+        new EventTrigger("L3").onTrue(ScoringCommands.goL3(m_elevator, m_wrist))
+            .onFalse(ScoringCommands.goHome(m_elevator, m_wrist));
+
+    }
+    
+    private void configureButtonBindings() {
         // Note that X is defined as forward according to WPILib convention,
         // and Y is defined as to the left according to WPILib convention.
         m_drivetrain.setDefaultCommand(
@@ -104,9 +133,7 @@ public class RobotContainer {
         //left bumper coral intake
         driverController.leftBumper()
             .onTrue(new IntakeCoral(m_funnel, m_elevator, m_wrist, m_coralClaw))
-            .onFalse(ScoringCommands.goHome(m_elevator, m_wrist).
-                alongWith(m_coralClaw.stop()).
-                alongWith(m_algaeClaw.stop()));
+            .onFalse(ScoringCommands.goHome(m_elevator, m_wrist));
 
         /* 
         driverController.leftBumper()
@@ -117,6 +144,6 @@ public class RobotContainer {
     }
 
     public Command getAutonomousCommand() {
-        return Commands.print("No autonomous command configured");
+        return autoChooser.getSelected();
     }
 }
